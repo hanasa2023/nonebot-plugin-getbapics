@@ -24,4 +24,4 @@ async def _(bot: Bot, event: MessageEvent):
         try:
             await bot.send(event, MessageSegment.image(file=file))
         except Exception as e:
-            await bot.send(event, MessageSegment(e))
+            await bot.send(event, MessageSegment(str(e)))
