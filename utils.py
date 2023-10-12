@@ -5,7 +5,7 @@ import asyncio
 import aiofiles
 
 from pathlib import Path
-from typing import Tuple
+from typing import Any, List
 
 
 async def createImageDir() -> Path:
@@ -16,32 +16,44 @@ async def createImageDir() -> Path:
         os.mkdir(image_dir)
     return image_dir
 
-async def getImage() -> Tuple[str, str, str]:
+async def getImage() -> List[Any]:
     """功能：获取图片对应JSON数据"""
+    url="https://api.lolicon.app/setu/v2"
     data = {
         "tag": [
             ["BlueArchive", "碧蓝档案", "蔚蓝档案", "ブルーアーカイブ", "ブルアカ"]
         ],
-        "proxy": "1-cf.pximg.net"
+        "r18": 0,
+        "num": 3,
+        "uid": 0,
+        "size": "original",
+        "excludeAI": False
     }
-    data = json.dumps(data)
+    headers = {"Content-Type": "application/json"}
     async with aiohttp.ClientSession() as sess:
-        async with sess.post("https://api.lolicon.app/setu/v2", data=data) as resp:
+        async with sess.post(url=url, data=json.dumps(data), headers=headers) as resp:
             resp_dict = json.loads(json.dumps(await resp.json()))
-            print(resp_dict["data"][0])
-            return resp_dict["data"][0]["title"], resp_dict["data"][0]["urls"]["original"], resp_dict["data"][0]["urls"]["original"][-3:]
+            print(resp_dict)
+            return_data = []
+            for r_data in resp_dict["data"]:
+                return_data.append([r_data["title"], r_data["urls"][data["size"]], r_data["urls"][data["size"]][-3:]])
+            return return_data
 
-async def saveImage() -> Path:
+async def saveImage() -> List[Path]:
     """功能：保存图片至本地"""
-    title, url, type = await getImage()
-    pic_dir = await createImageDir()
-    pic_path = pic_dir.joinpath(f"{title}.{type}")
-    async with aiohttp.ClientSession() as sess:
-        async with sess.get(url) as resp:
-            response = await resp.read()
-    async with aiofiles.open(pic_path, 'wb') as f:
-        await f.write(response)
-    return pic_path
+    pic_paths = []
+    pic_datas = await getImage()
+    for pic_data in pic_datas:
+        title, url, type = pic_data
+        pic_dir = await createImageDir()
+        pic_path = pic_dir.joinpath(f"{title}.{type}")
+        pic_paths.append(pic_path)
+        async with aiohttp.ClientSession() as sess:
+            async with sess.get(url) as resp:
+                response = await resp.read()
+        async with aiofiles.open(pic_path, 'wb') as f:
+            await f.write(response)
+    return pic_paths
 
 if __name__ == "__main__":
     asyncio.run(saveImage())

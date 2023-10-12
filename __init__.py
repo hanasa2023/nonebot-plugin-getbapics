@@ -19,5 +19,9 @@ get_a_image = on_command("setu")
 
 @get_a_image.handle()
 async def _(bot: Bot, event: MessageEvent):
-    file = await saveImage()
-    await bot.send(event, MessageSegment.image(file=file))
+    files = await saveImage()
+    for file in files:
+        try:
+            await bot.send(event, MessageSegment.image(file=file))
+        except Exception as e:
+            await bot.send(event, MessageSegment(e))
