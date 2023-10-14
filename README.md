@@ -1,4 +1,4 @@
-# BaImages
+# nonebot-plugin-getbapics
 ## 目前可公开的情报：
 ```
 1、没做r18
