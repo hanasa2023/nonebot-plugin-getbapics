@@ -1,4 +1,4 @@
-# BaImages
+# nonebot-plugin-getbapics
 ## 使用方法
 * 输入```/setu+[tag]+[x|X|*][num]+量词```使用
 * tag自选， ```x``` ```X``` ```*```可选，num可选，量词可选```张``` ```个``` ```份```
