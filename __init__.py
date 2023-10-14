@@ -43,8 +43,12 @@ async def _(bot: Bot, event: MessageEvent,
     logger.debug(args)
     config.id = int(event.scene)
     if tag := args["tag"]:
-        config.tag = tag
-    if num := int(args["num"]):
+        if tag.isdigit():
+            config.num = int(tag)
+        else:
+            config.tag = tag
+    if num := args["num"]:
+        num = int(num)
         if num > MAX_PICS:
             await bot.send(event, MessageSegment.text(
                 f"当前单次获取数量已超过最大限制{MAX_PICS}张，已使用默认数量～ "
