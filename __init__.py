@@ -47,12 +47,13 @@ async def _(bot: Bot, event: MessageEvent,
     if num := int(args["num"]):
         if num > MAX_PICS:
             await bot.send(event, MessageSegment.text(
-                f"当前单次获取数量已超过最大限制{MAX_PICS}张，已使用默认数量！"
+                f"当前单次获取数量已超过最大限制{MAX_PICS}张，已使用默认数量～ "
             ))
         else:
             config.num = num
     if not event.is_group:
         config.message_type = "private"
+    await bot.send(event, "请耐心等待喵～")
     await update_database(config)
     files = await saveImage(config.id)
     for file in files:
