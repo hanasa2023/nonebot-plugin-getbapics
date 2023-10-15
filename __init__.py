@@ -1,6 +1,6 @@
 import re
 from typing import Annotated, Any
-from nonebot import get_driver, logger, on_regex
+from nonebot import logger, on_regex
 from nonebot.params import RegexDict
 from nonebot.plugin import PluginMetadata
 from nonebot.adapters.red import Bot, MessageEvent, MessageSegment
@@ -15,14 +15,15 @@ __plugin_meta = PluginMetadata(
     config=Config,
 )
 
-global_config = get_driver().config
-config = Config.parse_obj(global_config)
+# 获取配置
+# global_config = get_driver().config
+# config = Config.parse_obj(global_config)
 
-get_a_image = on_regex(r'^\/setu\s*(?P<tag>\S*)?\s*[x|*]?(?P<num>\d+)?[张|个|份]?$'
+get_a_image = on_regex(r'^\/setu\s+(?P<tag>\S*)?\s+[x|*]?(?P<num>\d+)?[张|个|份]?$'
                        , re.I, priority=1)
-status = on_regex(r"\/setu\s*(?P<cmd>open|close|开启|关闭)\s*(?P<tag>r18|ai)", 
+status = on_regex(r"\/setu\s+(?P<cmd>open|close|开启|关闭)\s+(?P<tag>r18|ai)", 
                   priority=2, block=True)
-help = on_regex(r"\/setu\s*(获取)\s*(?P<help>help|帮助)", priority=2, block=True)
+help = on_regex(r"\/setu\s+(获取)\s+(?P<help>help|帮助)", priority=2, block=True)
 
 if check_database():
     logger.info("数据库已创建！")
@@ -32,6 +33,7 @@ else:
 @get_a_image.handle()
 async def _(bot: Bot, event: MessageEvent, 
             regex_group: Annotated[dict[str, Any], RegexDict()]):
+    config = Config()
     args = dict(regex_group)
     logger.debug(args)
     config.id = int(event.scene)
