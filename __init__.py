@@ -23,7 +23,7 @@ get_a_image = on_regex(r'\/setu\s*(?P<tag>\S*)?\s*[x|*]?(?P<num>\d+)?[张|个|�
                        , re.I, priority=1)
 status = on_regex(r"\/setu\s+(?P<cmd>open|close|开启|关闭)\s+(?P<tag>r18|ai)", 
                   priority=2, block=True)
-help = on_regex(r"\/setu\s+(获取)\s+(?P<help>help|帮助)", priority=2, block=True)
+help = on_regex(r"\/setu\s+(?P<help>help|帮助)", priority=2, block=True)
 
 if check_database():
     logger.info("数据库已创建！")
