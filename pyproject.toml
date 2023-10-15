@@ -1,0 +1,20 @@
+[tool.poetry]
+name = "nonebot-plugin-getbapics"
+version = "0.1.0"
+description = "Get BlueArchive Pictures"
+authors = ["hanasa2023 <hanasakayui2022@gmail.com>"]
+license = "MIT"
+readme = "README.md"
+homepage = "https://github.com/hanasa2023/nonebot-plugin-getbapics"
+documentation = "https://github.com/hanasa2023/nonebot-plugin-getbapics/blob/master/README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+nonebot2 = "^2.0.0"
+aiohttp = "^3.8.6"
+aiofiles = "^23.2.1"
+nonebot-adapter-red = "^0.5.2"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
