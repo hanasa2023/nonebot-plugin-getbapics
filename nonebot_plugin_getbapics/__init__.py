@@ -8,11 +8,15 @@ from nonebot.adapters.red import Bot, MessageEvent, MessageSegment
 from .config import HELP, MAX_PICS, Config
 from .utils import saveImage, check_database, update_database, update_optional_status
 
+
+__version__ = "0.1.1"
 __plugin_meta = PluginMetadata(
     name="BaImages",
     description="Get BA Images",
-    usage=HELP,
-    config=Config,
+    usage="Get BlueArchive Pictures",
+    type="application",
+    config=None,
+    supported_adapters={"~red"}
 )
 
 # 获取配置
