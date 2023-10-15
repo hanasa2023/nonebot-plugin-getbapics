@@ -9,7 +9,7 @@ from .config import HELP, MAX_PICS, Config
 from .utils import saveImage, check_database, update_database, update_optional_status
 
 
-__version__ = "0.1.2"
+__version__ = "0.1.3"
 __plugin_meta = PluginMetadata(
     name="BaImages",
     description="Get BA Images",
@@ -17,7 +17,11 @@ __plugin_meta = PluginMetadata(
     homepage="https://github.com/hanasa2023/nonebot-plugin-getbapics/blob/master/README.md",
     type="application",
     config=None,
-    supported_adapters={"~red"}
+    supported_adapters={"~red"},
+    extra={
+        "version": __version__,
+        "author": "hanasa2023 <hanasakayui2022@gmail.com>"
+    }
 )
 
 # 获取配置
