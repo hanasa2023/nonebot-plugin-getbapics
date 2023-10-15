@@ -19,7 +19,7 @@ __plugin_meta = PluginMetadata(
 # global_config = get_driver().config
 # config = Config.parse_obj(global_config)
 
-get_a_image = on_regex(r'\/setu\s*(?P<tag>\S*)?\s*[x|*]?(?P<num>\d+)?[张|个|份]?'
+get_a_image = on_regex(r'\/setu\s*(?P<tag>\S*)?\s*[x|*]*(?P<num>\d+)?[张|个|份]*'
                        , re.I, priority=2)
 status = on_regex(r"\/setu\s+(?P<cmd>open|close|开启|关闭)\s+(?P<tag>r18|ai)", 
                   priority=1, block=True)
