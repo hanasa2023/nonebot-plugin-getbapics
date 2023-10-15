@@ -9,8 +9,8 @@ from .config import HELP, MAX_PICS, Config
 from .utils import saveImage, check_database, update_database, update_optional_status
 
 
-__version__ = "0.1.3"
-__plugin_meta = PluginMetadata(
+__version__ = "0.1.4"
+__plugin_meta__ = PluginMetadata(
     name="BaImages",
     description="Get BA Images",
     usage="Get BlueArchive Pictures",
