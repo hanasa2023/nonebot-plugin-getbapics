@@ -9,10 +9,10 @@ from .config import HELP, MAX_PICS, Config
 from .utils import saveImage, check_database, update_database, update_optional_status
 
 
-__version__ = "0.1.4"
+__version__ = "0.1.5"
 __plugin_meta__ = PluginMetadata(
-    name="BaImages",
-    description="Get BA Images",
+    name="nonebot-plugin-getbapics",
+    description="Get BA Pictures",
     usage="Get BlueArchive Pictures",
     homepage="https://github.com/hanasa2023/nonebot-plugin-getbapics/blob/master/README.md",
     type="application",
