@@ -20,10 +20,10 @@ __plugin_meta = PluginMetadata(
 # config = Config.parse_obj(global_config)
 
 get_a_image = on_regex(r'\/setu\s*(?P<tag>\S*)?\s*[x|*]?(?P<num>\d+)?[张|个|份]?'
-                       , re.I, priority=1)
+                       , re.I, priority=2)
 status = on_regex(r"\/setu\s+(?P<cmd>open|close|开启|关闭)\s+(?P<tag>r18|ai)", 
-                  priority=2, block=True)
-help = on_regex(r"\/setu\s+(获取)\s+(?P<help>help|帮助)", priority=2, block=True)
+                  priority=1, block=True)
+help = on_regex(r"\/setu\s*(help|帮助)", priority=1, block=True)
 
 if check_database():
     logger.info("数据库已创建！")
