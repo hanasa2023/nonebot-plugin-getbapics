@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "nonebot_plugin_getbapics"
-version = "0.1.0"
+version = "0.1.1"
 description = "Get BlueArchive Pictures"
 authors = ["hanasa2023 <hanasakayui2022@gmail.com>"]
 license = "MIT"
