@@ -70,7 +70,7 @@ async def saveImage(id: int) -> List[Path]:
             await f.write(response)
     return pic_paths
 
-def _check_database() -> bool:
+def check_database() -> bool:
     """检查数据库是否存在，若不存在则创建数据库"""
     if (not os.path.exists(DATABASE)):
         conn = sqlite3.connect(DATABASE)
@@ -112,5 +112,36 @@ async def update_database(config: Config) -> None:
                         config.message_type, config.id))
         logger.debug("finish update database")
         conn.commit()
+    conn.close()
+
+async def update_optional_status(cmd: int, tag: str, id: int):
+    """更新可选状态"""
+    config = Config()
+    conn = sqlite3.connect(DATABASE)
+    c = conn.cursor()
+    sql = "SELECT * FROM CONFIG WHERE ID = ?"
+    data = c.execute(sql, (id, )).fetchone()
+    # 如果对应id的行在数据库中未创建，则需通过初始数据创建
+    if not data:
+        logger.debug("start to update database!")
+        sql = """INSERT INTO CONFIG (ID, R18, NUM, UID, TAG, 
+                                    PROXY, EXCLUDEAI, TYPE)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?)"""
+        c.execute(sql, (id, config.r18, config.num, config.uid, config.tag,
+                        config.proxy, int(config.excludeAI), config.message_type))
+        logger.debug("finish update database!")
+        conn.commit()
+    if tag == "r18":
+        sql = "UPDATE CONFIG SET R18 = ? WHERE ID = ?"
+        logger.debug("start to update r18 status")
+        c.execute(sql, (cmd, id))
+        conn.commit()
+        logger.debug("finish to update r18 status")
+    else:
+        sql = "UPDATE CONFIG SET EXCLUDEAI = ? WHERE ID = ?"
+        logger.debug("start to update ai status")
+        c.execute(sql, (cmd, id))
+        conn.commit()
+        logger.debug("finish to update ai status")
     conn.close()
 

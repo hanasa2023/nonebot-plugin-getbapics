@@ -1,26 +1,17 @@
 import re
 from typing import Annotated, Any
-from nonebot import get_driver, logger, on_command, on_regex
+from nonebot import get_driver, logger, on_regex
 from nonebot.params import RegexDict
 from nonebot.plugin import PluginMetadata
 from nonebot.adapters.red import Bot, MessageEvent, MessageSegment
 
-from .config import MAX_PICS, Config
-from .utils import saveImage, _check_database, update_database
+from .config import HELP, MAX_PICS, Config
+from .utils import saveImage, check_database, update_database, update_optional_status
 
 __plugin_meta = PluginMetadata(
     name="BaImages",
     description="Get BA Images",
-    usage="""使用方法: 输入 /setu+[tag]+[x|X|*][num]+量词 使用
-                        tag自选， x X *可选，num可选，量词可选 张 个 份
-                        已实现空格自由
-            例子:   /setu
-                    /setu 4
-                    /setu 美游 x4张
-                    /setu x4张
-                    /setu 美游 x4个
-                    /setu 美游 4张
-                    /setu 美游 4""",
+    usage=HELP,
     config=Config,
 )
 
@@ -28,10 +19,12 @@ global_config = get_driver().config
 config = Config.parse_obj(global_config)
 
 get_a_image = on_regex(r'^\/setu\s*(?P<tag>\S*)?\s*[x|*]?(?P<num>\d+)?[张|个|份]?$'
-                       , re.I)
-r18_status = on_command("")
+                       , re.I, priority=1)
+status = on_regex(r"\/setu\s*(?P<cmd>open|close|开启|关闭)\s*(?P<tag>r18|ai)", 
+                  priority=2, block=True)
+help = on_regex(r"\/setu\s*(?P<help>help|帮助)", priority=2, block=True)
 
-if _check_database():
+if check_database():
     logger.info("数据库已创建！")
 else:
     logger.info("数据库创建成功！")
@@ -65,3 +58,25 @@ async def _(bot: Bot, event: MessageEvent,
            await bot.send(event, MessageSegment.image(file=file))
        except Exception as e:
            await bot.send(event, MessageSegment(str(e)))
+
+@status.handle()
+async def _(bot: Bot, event: MessageEvent, 
+            regex_group: Annotated[dict[str, Any], RegexDict()]):
+    args = dict(regex_group)
+    logger.debug(f"status={args}")
+    id = int(event.scene)
+    logger.debug(event.scene)
+    logger.debug(id)
+    logger.debug(type(id))
+    # 此处应该按照群组与好友进行鉴权处理，但是adapter-red没写获取发送者id的方法……
+    if args["cmd"] == "open" or args["cmd"] == "开启":
+        await update_optional_status(1, args["tag"], id)
+        await bot.send(event, MessageSegment.text(f"{args['tag']}已开启！"))
+    else:
+        await update_optional_status(0, args["tag"], id)
+        await bot.send(event, MessageSegment.text(f"{args['tag']}已关闭！"))
+
+@help.handle()
+async def _(bot: Bot, event: MessageEvent):
+    await bot.send(event, MessageSegment.text(HELP))
+
