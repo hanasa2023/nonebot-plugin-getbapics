@@ -14,6 +14,7 @@ __plugin_meta = PluginMetadata(
     name="BaImages",
     description="Get BA Images",
     usage="Get BlueArchive Pictures",
+    homepage="https://github.com/hanasa2023/nonebot-plugin-getbapics/blob/master/README.md",
     type="application",
     config=None,
     supported_adapters={"~red"}
