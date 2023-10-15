@@ -9,7 +9,7 @@ from .config import HELP, MAX_PICS, Config
 from .utils import saveImage, check_database, update_database, update_optional_status
 
 
-__version__ = "0.1.1"
+__version__ = "0.1.2"
 __plugin_meta = PluginMetadata(
     name="BaImages",
     description="Get BA Images",
